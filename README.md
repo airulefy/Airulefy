@@ -1,4 +1,4 @@
-# Airulefy
+# Airulefy (in development)
 
 **Unify your AI rules. One source of truth, synced across all major AI coding agents.**
 
