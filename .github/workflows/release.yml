@@ -1,0 +1,29 @@
+name: publish-pypi
+on:
+  push:
+    tags:
+      - "v*.*.*"          # v1.2.0 などを push したら発火
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+
+      - uses: abatilo/actions-poetry@v3  # Poetry installed
+
+      - run: poetry install --no-root   # install deps for build
+
+      - name: Build package
+        run: poetry build
+
+      - name: Publish to PyPI
+        env:
+          POETRY_PYPI_TOKEN_PYPI: ${{ secrets.PYPI_API_TOKEN }}
+        run: poetry publish --no-interaction --username "__token__" --password "$POETRY_PYPI_TOKEN_PYPI"
