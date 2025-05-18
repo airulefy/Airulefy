@@ -1,5 +1,9 @@
 # Airulefy (in development)
 
+[![Tests](https://github.com/airulefy/Airulefy/actions/workflows/tests.yml/badge.svg)](https://github.com/airulefy/Airulefy/actions/workflows/tests.yml)
+[![codecov](https://codecov.io/gh/airulefy/Airulefy/branch/main/graph/badge.svg)](https://codecov.io/gh/airulefy/Airulefy)
+[![PyPI version](https://badge.fury.io/py/airulefy.svg)](https://badge.fury.io/py/airulefy)
+
 **Unify your AI rules. One source of truth, synced across all major AI coding agents.**
 
 Airulefy makes it easy to maintain a single set of rules in `.ai/` and automatically generate or link them to each tool-specific format (Cursor, Copilot, Cline, Devin, etc.).  
