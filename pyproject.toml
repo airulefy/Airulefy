@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "airulefy"
+version = "0.1.0"
+description = "AI rule file generator and symlink manager for AI coding tools"
+authors = ["Your Name <your.email@example.com>"]
+readme = "README.md"
+packages = [{include = "airulefy", from = "src"}]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+typer = {extras = ["all"], version = "^0.9.0"}
+pydantic = "^2.6.0"
+watchdog = "^3.0.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+airulefy = "airulefy.__main__:app" 
