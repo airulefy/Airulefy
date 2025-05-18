@@ -31,3 +31,70 @@ airulefy generate
 
 # Watch for changes in .ai/ and auto-regenerate
 airulefy watch
+```
+
+## 🔧 Configuration
+
+Create a `.ai-rules.yml` file in your project root to customize Airulefy's behavior:
+
+```yaml
+default_mode: symlink  # or "copy"
+tools:
+  cursor:
+    output: ".cursor/rules/core.mdc"  # custom output path
+  cline:
+    mode: copy  # override default mode
+  copilot: {}  # use defaults
+  devin:
+    output: "devin-guidelines.md"
+```
+
+## 🧩 DevContainer Usage
+
+Airulefy works seamlessly with GitHub Codespaces and VS Code DevContainers:
+
+```bash
+# Open in Codespace
+gh codespace create -r airulefy/Airulefy
+
+# Or clone and open locally with VS Code
+git clone https://github.com/your-username/your-project.git
+cd your-project
+code .
+```
+
+## 🚀 CLI Commands
+
+```bash
+# Generate rules (default: symlink if supported)
+airulefy generate
+
+# Force copy instead of symlink
+airulefy generate --copy
+
+# Watch for changes and auto-regenerate
+airulefy watch
+
+# Validate configuration and files
+airulefy validate
+
+# List supported tools and their status
+airulefy list-tools
+
+# Show version
+airulefy --version
+```
+
+## 🧠 Philosophy
+
+Airulefy follows the "single source of truth" principle. Keep all your AI coding assistant rules in one place (`.ai/` directory) and let Airulefy handle the synchronization to each tool's specific format.
+
+This ensures:
+
+1. **Consistency** across all AI assistants
+2. **Version control** for your AI instructions
+3. **Simplicity** in maintaining rules
+
+## 📄 License
+
+MIT © 2025 Kuu

@@ -1,0 +1,14 @@
+{
+  "name": "Airulefy Dev",
+  "build": { "dockerfile": "Dockerfile" },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance"
+      ]
+    }
+  },
+  "postCreateCommand": "poetry install --no-root && poetry run pytest",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}"
+}
