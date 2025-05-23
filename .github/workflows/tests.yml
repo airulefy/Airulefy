@@ -12,6 +12,8 @@ jobs:
     strategy:
       matrix:
         python-version: ['3.11', '3.12']
+      # 1つのジョブが失敗しても他のジョブは続行する
+      fail-fast: false
 
     steps:
     - uses: actions/checkout@v4
@@ -36,11 +38,24 @@ jobs:
     
     - name: Run E2E tests
       run: |
-        mkdir -p /tmp/airulefy_tests
-        TMPDIR=/tmp/airulefy_tests poetry run pytest tests/test_e2e.py -v
+        # テスト用ディレクトリを作成
+        mkdir -p test_workspace
+        cd test_workspace
         
-        # 出力ディレクトリを表示してデバッグ
-        find /tmp/airulefy_tests -type d -ls || true
+        # E2Eテスト用の実行環境を作成
+        mkdir -p .ai
+        echo "# Test Rule" > .ai/rule.md
+        echo "default_mode: copy\ntools:\n  cursor: {}\n  cline: {}\n  copilot: {}\n  devin: {}" > .ai-rules.yml
+        
+        # テストを実行
+        poetry run airulefy generate
+        
+        # 生成されたファイルを表示
+        find . -type f | grep -v "__pycache__" || true
+        
+        # E2Eテストを実行
+        cd ..
+        poetry run pytest tests/test_e2e.py -v
     
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
@@ -53,6 +68,6 @@ jobs:
       if: success() || failure()
       uses: actions/upload-artifact@v4
       with:
-        name: e2e-test-artifacts
-        path: /tmp/airulefy_tests
+        name: e2e-test-artifacts-py${{ matrix.python-version }}
+        path: test_workspace
         if-no-files-found: warn
