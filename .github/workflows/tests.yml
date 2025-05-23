@@ -47,7 +47,7 @@ jobs:
     
     - name: Archive generated files from E2E tests
       if: success() || failure()
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: e2e-test-artifacts
         path: |
