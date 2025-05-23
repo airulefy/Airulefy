@@ -1,4 +1,4 @@
-name: Tests
+name: E2E Tests
 
 on:
   push:
@@ -7,19 +7,18 @@ on:
     branches: [ main, develop ]
 
 jobs:
-  test:
+  e2e-tests:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ['3.11', '3.12']
-
+    
     steps:
     - uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
     
-    - name: Set up Python ${{ matrix.python-version }}
+    - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: ${{ matrix.python-version }}
+        python-version: '3.11'
     
     - name: Install Poetry
       run: |
@@ -30,22 +29,11 @@ jobs:
       run: |
         poetry install
     
-    - name: Run unit tests with coverage
-      run: |
-        poetry run pytest --cov=airulefy --cov-report=xml --ignore=tests/test_e2e.py
-    
     - name: Run E2E tests
       run: |
         poetry run pytest tests/test_e2e.py -v
     
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v3
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }}
-        file: ./coverage.xml
-        fail_ci_if_error: true
-    
-    - name: Archive generated files from E2E tests
+    - name: Archive generated files
       if: success() || failure()
       uses: actions/upload-artifact@v3
       with:
