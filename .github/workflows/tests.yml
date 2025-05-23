@@ -36,7 +36,11 @@ jobs:
     
     - name: Run E2E tests
       run: |
-        poetry run pytest tests/test_e2e.py -v
+        mkdir -p /tmp/airulefy_tests
+        TMPDIR=/tmp/airulefy_tests poetry run pytest tests/test_e2e.py -v
+        
+        # 出力ディレクトリを表示してデバッグ
+        find /tmp/airulefy_tests -type d -ls || true
     
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
@@ -50,9 +54,5 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: e2e-test-artifacts
-        path: |
-          /tmp/**/.cursor/rules/
-          /tmp/**/.cline-rules
-          /tmp/**/.github/copilot-instructions.md
-          /tmp/**/devin-guidelines.md
-        if-no-files-found: ignore
+        path: /tmp/airulefy_tests
+        if-no-files-found: warn
