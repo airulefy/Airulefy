@@ -1,19 +1,47 @@
 site_name: Airulefy Docs
+site_url: https://airulefy.github.io/
+repo_url: https://github.com/airulefy/Airulefy
+repo_name: airulefy/Airulefy
+
 theme:
   name: material
   palette:
     primary: indigo
     accent: indigo
+  language: en
+  features:
+    - content.tabs.link
+    - navigation.instant
+    - navigation.top
+  icon:
+    alternate: material/translate
 
+plugins:
+  - search
+  - i18n:
+      default_language: en
+      languages:
+        en: English
+        ja: 日本語
+
+extra:
+  alternate:
+    - name: English
+      link: /en/
+      lang: en
+    - name: 日本語
+      link: /ja/
+      lang: ja
+      
 nav:
-  - ホーム: index.md
-  - インストール方法: installation.md
-  - クイックスタート: quickstart.md
-  - CLIリファレンス: cli_reference.md
-  - 設定方法: configuration.md
-  - 動作原理: how_it_works.md
+  - Home: index.md
+  - Installation: installation.md
+  - Quickstart: quickstart.md
+  - CLI Reference: cli_reference.md
+  - Configuration: configuration.md
+  - How It Works: how_it_works.md
   - DevContainer: devcontainer.md
-  - 貢献: contributing.md
+  - Contributing: contributing.md
 
 markdown_extensions:
   - pymdownx.highlight
@@ -22,3 +50,5 @@ markdown_extensions:
         - name: mermaid
           class: mermaid
           format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
