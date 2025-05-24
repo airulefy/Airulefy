@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "airulefy"
-version = "0.1.0"
+version = "0.1.1"
 description = "Unify your AI rules across multiple AI coding agents"
 authors = ["Kuu <info@example.com>"]
 license = "MIT"
