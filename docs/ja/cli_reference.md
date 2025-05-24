@@ -32,6 +32,7 @@ airulefy generate [オプション]
 |----------|------|
 | `--copy`, `-c` | シンボリックリンクの代わりにファイルをコピーします |
 | `--verbose`, `-v` | 詳細な出力を表示します |
+| `--preserve-structure`, `-p` | ディレクトリ構造を保持し、Cursor用に複数の.mdcファイルを出力 |
 | `--help` | ヘルプメッセージを表示します |
 
 **使用例:**
@@ -45,6 +46,9 @@ airulefy generate --copy
 
 # 詳細出力付きでルールを生成
 airulefy generate --verbose
+
+# ディレクトリ構造を保持してCursor用のルールを生成
+airulefy generate --preserve-structure
 ```
 
 ### watch
@@ -60,6 +64,7 @@ airulefy watch [オプション]
 | オプション | 説明 |
 |----------|------|
 | `--copy`, `-c` | シンボリックリンクの代わりにファイルをコピーします |
+| `--preserve-structure`, `-p` | ディレクトリ構造を保持し、Cursor用に複数の.mdcファイルを出力 |
 | `--help` | ヘルプメッセージを表示します |
 
 **使用例:**
@@ -70,6 +75,9 @@ airulefy watch
 
 # コピーモードで変更を監視
 airulefy watch --copy
+
+# ディレクトリ構造を保持してCursor用の変更を監視
+airulefy watch --preserve-structure
 ```
 
 ### validate

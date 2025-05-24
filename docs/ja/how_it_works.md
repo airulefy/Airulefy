@@ -83,8 +83,10 @@ Airulefyは、`.ai-rules.yml`ファイルから設定を読み込み、Pydantic�
 
 #### サポートされているアダプター
 
-- **Cursor**: `.mdc`形式のファイルを`.cursor/rules/`ディレクトリに生成
-- **Cline**: 標準的なMarkdownを`.cline-rules`ファイルに生成
+- **Cursor**: `.cursor/rules/`ディレクトリに`.mdc`ファイルを生成
+  - `--preserve-structure`オプションでディレクトリ構造を保持
+  - 構造を保持する場合、元のディレクトリ階層を維持した複数の`.mdc`ファイルを生成
+- **Cline**: `.cline-rules`ファイルに標準的なMarkdownを生成
 - **Copilot**: GitHub Copilot用の指示を`.github/copilot-instructions.md`に生成
 - **Devin**: Devin用のガイドラインを`devin-guidelines.md`に生成
 

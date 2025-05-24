@@ -31,6 +31,7 @@ airulefy generate [options]
 |--------|-------------|
 | `--copy`, `-c` | Force copy mode instead of symlink |
 | `--verbose`, `-v` | Show detailed output |
+| `--preserve-structure`, `-p` | Preserve directory structure and output multiple .mdc files for Cursor |
 | `--help` | Show help message |
 
 **Examples:**
@@ -44,6 +45,9 @@ airulefy generate --copy
 
 # Generate rules with detailed output
 airulefy generate --verbose
+
+# Generate rules preserving directory structure for Cursor
+airulefy generate --preserve-structure
 ```
 
 ### watch
@@ -59,6 +63,7 @@ airulefy watch [options]
 | Option | Description |
 |--------|-------------|
 | `--copy`, `-c` | Force copy mode instead of symlink |
+| `--preserve-structure`, `-p` | Preserve directory structure and output multiple .mdc files for Cursor |
 | `--help` | Show help message |
 
 **Examples:**
@@ -69,6 +74,9 @@ airulefy watch
 
 # Watch for changes using copy mode
 airulefy watch --copy
+
+# Watch for changes preserving directory structure for Cursor
+airulefy watch --preserve-structure
 ```
 
 ### validate

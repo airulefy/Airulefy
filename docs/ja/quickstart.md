@@ -89,6 +89,14 @@ Successfully generated rule files:
 airulefy generate -v
 ```
 
+ディレクトリ構造を保持したいCursorユーザーの場合：
+
+```bash
+airulefy generate --preserve-structure
+```
+
+これにより、`.ai/`の元のディレクトリ構造を保持したまま、`.cursor/rules/`に複数の`.mdc`ファイルが生成されます。
+
 ## 5. 変更監視モード（オプション）
 
 `.ai`ディレクトリの変更を監視し、変更があれば自動的にルールを再生成するモードを実行できます：

@@ -81,6 +81,8 @@ Key responsibilities:
 #### Supported Adapters
 
 - **Cursor**: Generates `.mdc` files in the `.cursor/rules/` directory
+  - Supports preserving directory structure with `--preserve-structure` option
+  - When preserving structure, generates multiple `.mdc` files maintaining the original directory hierarchy
 - **Cline**: Generates standard Markdown in the `.cline-rules` file
 - **Copilot**: Generates GitHub Copilot instructions in `.github/copilot-instructions.md`
 - **Devin**: Generates Devin guidelines in `devin-guidelines.md`

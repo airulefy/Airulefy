@@ -89,6 +89,14 @@ For more detailed output, use the `-v` option:
 airulefy generate -v
 ```
 
+For Cursor users who want to maintain the directory structure of their rules:
+
+```bash
+airulefy generate --preserve-structure
+```
+
+This will generate multiple `.mdc` files in `.cursor/rules/` while preserving the original directory structure from `.ai/`.
+
 ## 5. Watch Mode (Optional)
 
 You can run a watch mode that automatically regenerates rules when the `.ai` directory changes:

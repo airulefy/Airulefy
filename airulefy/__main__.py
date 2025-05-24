@@ -40,6 +40,9 @@ def generate(
     verbose: bool = typer.Option(
         False, "--verbose", "-v", help="Show verbose output"
     ),
+    preserve_structure: bool = typer.Option(
+        False, "--preserve-structure", "-p", help="Preserve directory structure and output multiple .mdc files for Cursor"
+    ),
 ):
     """Generate tool-specific rule files from .ai/ directory."""
     project_root = get_project_root()
@@ -73,15 +76,25 @@ def generate(
         if verbose:
             console.print(f"Generating rules for {tool_name}...")
         
-        success = generator.generate(md_files, force_mode)
-        
-        if success:
-            success_count += 1
-            mode_text = "copied to" if force_mode == SyncMode.COPY or tool_config.mode == SyncMode.COPY else "linked to"
-            rel_path = generator.output_path.relative_to(project_root)
-            console.print(f"[green]✓[/green] {tool_name}: {mode_text} [blue]{rel_path}[/blue]")
+        if tool_name == "cursor" and preserve_structure:
+            success = generator.generate(md_files, force_mode, preserve_structure=True)
+            if success:
+                mode_text = "copied to" if force_mode == SyncMode.COPY or tool_config.mode == SyncMode.COPY else "linked to"
+                for f in generator.last_generated_files:
+                    rel_path = f.relative_to(project_root)
+                    console.print(f"[green]✓[/green] {tool_name}: {mode_text} [blue]{rel_path}[/blue]")
+                success_count += 1
+            else:
+                console.print(f"[red]✗[/red] {tool_name}: Failed to generate rules")
         else:
-            console.print(f"[red]✗[/red] {tool_name}: Failed to generate rules")
+            success = generator.generate(md_files, force_mode)
+            if success:
+                success_count += 1
+                mode_text = "copied to" if force_mode == SyncMode.COPY or tool_config.mode == SyncMode.COPY else "linked to"
+                rel_path = generator.output_path.relative_to(project_root)
+                console.print(f"[green]✓[/green] {tool_name}: {mode_text} [blue]{rel_path}[/blue]")
+            else:
+                console.print(f"[red]✗[/red] {tool_name}: Failed to generate rules")
     
     if success_count == 0:
         console.print("[red]No rules were generated successfully.[/red]")
@@ -93,6 +106,9 @@ def generate(
 def watch(
     copy: bool = typer.Option(
         False, "--copy", "-c", help="Force copy mode instead of symlink"
+    ),
+    preserve_structure: bool = typer.Option(
+        False, "--preserve-structure", "-p", help="Preserve directory structure and output multiple .mdc files for Cursor"
     ),
 ):
     """Watch .ai/ directory for changes and regenerate rules automatically."""
@@ -110,10 +126,10 @@ def watch(
     console.print("Press Ctrl+C to stop.")
     
     # Initial generation
-    generate(copy=copy, verbose=False)
+    generate(copy=copy, verbose=False, preserve_structure=preserve_structure)
     
     # Start watching
-    watch_directory(input_dir, lambda: generate(copy=copy, verbose=False))
+    watch_directory(input_dir, lambda: generate(copy=copy, verbose=False, preserve_structure=preserve_structure))
 
 
 @app.command()
