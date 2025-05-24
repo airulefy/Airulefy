@@ -8,11 +8,17 @@ import pytest
 
 from airulefy.config import SyncMode, ToolConfig
 from airulefy.generator.base import RuleGenerator
+from airulefy.generator.cursor import CursorGenerator
 
 
 # Concrete implementation of the abstract RuleGenerator class for testing
 class TestGenerator(RuleGenerator):
     """Test implementation of RuleGenerator."""
+    
+    def __init__(self, tool_name: str, tool_config: ToolConfig, project_root: Path):
+        """Initialize the test generator."""
+        super().__init__(tool_name, tool_config, project_root)
+        self.last_generated_files = []
     
     def transform_content(self, content: str) -> str:
         """Transform content for testing."""
@@ -129,3 +135,39 @@ def test_rule_generator_generate_force_copy(tmp_path):
     assert (tmp_path / "output.md").exists()
     assert not (tmp_path / "output.md").is_symlink()
     assert (tmp_path / "output.md").read_text() == "TRANSFORMED: # Test content"
+
+
+def test_rule_generator_generate_preserve_structure(tmp_path):
+    """Test generating with preserve_structure option."""
+    # Create test files in subdirectories
+    input_dir = tmp_path / ".ai"
+    input_dir.mkdir()
+    subdir = input_dir / "sub"
+    subdir.mkdir()
+
+    input_file1 = input_dir / "main.md"
+    input_file1.write_text("# Main content")
+
+    input_file2 = subdir / "subfile.md"
+    input_file2.write_text("# Sub content")
+
+    # Create generator
+    config = ToolConfig(mode=SyncMode.COPY, output=".cursor/rules")
+    generator = CursorGenerator("cursor", config, tmp_path)
+
+    # Generate with preserve_structure
+    result = generator.generate([input_file1, input_file2], preserve_structure=True)
+
+    # Check result
+    assert result is True
+
+    # Check that files were generated in the correct structure
+    output_dir = tmp_path / ".cursor/rules"
+    assert (output_dir / "main.mdc").exists()
+    assert (output_dir / "sub" / "subfile.mdc").exists()
+
+    # Check content
+    content1 = (output_dir / "main.mdc").read_text()
+    content2 = (output_dir / "sub" / "subfile.mdc").read_text()
+    assert "# Main content" in content1
+    assert "# Sub content" in content2
