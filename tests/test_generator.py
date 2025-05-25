@@ -156,7 +156,7 @@ def test_rule_generator_generate_preserve_structure(tmp_path):
     generator = CursorGenerator("cursor", config, tmp_path)
 
     # Generate with preserve_structure
-    result = generator.generate([input_file1, input_file2], preserve_structure=True)
+    result = generator.generate([input_file1, input_file2], preserve_structure=True, input_dir=input_dir)
 
     # Check result
     assert result is True

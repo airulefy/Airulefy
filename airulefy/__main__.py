@@ -77,7 +77,7 @@ def generate(
             console.print(f"Generating rules for {tool_name}...")
         
         if tool_name == "cursor" and preserve_structure:
-            success = generator.generate(md_files, force_mode, preserve_structure=True)
+            success = generator.generate(md_files, force_mode, preserve_structure=True, input_dir=input_dir)
             if success:
                 mode_text = "copied to" if force_mode == SyncMode.COPY or tool_config.mode == SyncMode.COPY else "linked to"
                 for f in generator.last_generated_files:

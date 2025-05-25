@@ -115,7 +115,7 @@ def test_cursor_generate_preserve_structure(tmp_path):
     md_files = [input_file1, input_file2]
 
     # Generate with preserve_structure=True
-    result = generator.generate(md_files, preserve_structure=True)
+    result = generator.generate(md_files, preserve_structure=True, input_dir=ai_dir)
 
     # Check result
     assert result is True
@@ -133,3 +133,32 @@ def test_cursor_generate_preserve_structure(tmp_path):
 
     # Check that the old .mdc file has been removed
     assert not old_file.exists()
+
+
+def test_cursor_generate_preserve_structure_without_input_dir(tmp_path):
+    """Test generating Cursor rules with preserve_structure=True but no input_dir."""
+    # Create test files in subdirectories
+    ai_dir = tmp_path / ".ai"
+    ai_dir.mkdir()
+    subdir = ai_dir / "sub"
+    subdir.mkdir()
+    input_file1 = ai_dir / "main.md"
+    input_file1.write_text("# Main\n\nMain content.")
+    input_file2 = subdir / "subfile.md"
+    input_file2.write_text("# Sub\n\nSub content.")
+
+    # Create generator
+    config = ToolConfig(mode=SyncMode.COPY)
+    generator = CursorGenerator("cursor", config, tmp_path)
+
+    # Find all markdown files
+    md_files = [input_file1, input_file2]
+
+    # Generate with preserve_structure=True but no input_dir
+    result = generator.generate(md_files, preserve_structure=True)
+
+    # Check result
+    assert result is False
+    # Check that no files were generated
+    assert not (tmp_path / ".cursor/rules/main.mdc").exists()
+    assert not (tmp_path / ".cursor/rules/sub/subfile.mdc").exists()

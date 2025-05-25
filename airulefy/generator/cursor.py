@@ -59,7 +59,8 @@ class CursorGenerator(RuleGenerator):
         self,
         input_files: List[Path],
         force_mode: Optional[SyncMode] = None,
-        preserve_structure: bool = False
+        preserve_structure: bool = False,
+        input_dir: Optional[Path] = None
     ) -> bool:
         """
         Generate the rule file(s) for Cursor.
@@ -68,6 +69,7 @@ class CursorGenerator(RuleGenerator):
             input_files: List of input Markdown files
             force_mode: Force a specific sync mode (overrides config)
             preserve_structure: If True, preserve directory structure and output multiple .mdc files
+            input_dir: Path to the input directory. If None, uses project_root/.ai
 
         Returns:
             bool: True if successful, False otherwise
@@ -79,25 +81,31 @@ class CursorGenerator(RuleGenerator):
         if not input_files:
             return False
 
+        if preserve_structure and input_dir is None:
+            print("Error: input_dir is required when preserve_structure is True")
+            return False
+
         # Determine sync mode
         mode = force_mode if force_mode is not None else self.config.mode
 
-        # Set up project and output directories
-        project_root = self.project_root
-        input_root = project_root / ".ai"
-        output_root = project_root / ".cursor/rules"
+        # Set up output directory
+        output_root = self.project_root / ".cursor/rules"
 
         # Remove all existing .mdc files in output_root
         if preserve_structure and output_root.exists():
             for f in output_root.rglob("*.mdc"):
                 f.unlink()
 
+        # Use default input directory if not specified
+        if input_dir is None:
+            input_dir = self.project_root / ".ai"
+
         success = True
 
         for md_file in input_files:
             try:
-                # Calculate the relative path for output
-                rel_path = md_file.relative_to(input_root)
+                # Calculate output path based on input file path
+                rel_path = md_file.relative_to(input_dir)
                 out_path = output_root / rel_path.with_suffix(".mdc")
 
                 # Make sure the output directory exists
