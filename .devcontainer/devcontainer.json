@@ -9,6 +9,6 @@
       ]
     }
   },
-  "postCreateCommand": "poetry install --no-root && poetry run pytest",
+  "postCreateCommand": "poetry install && poetry run pytest",
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}"
 }
